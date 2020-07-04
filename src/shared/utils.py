@@ -9,29 +9,20 @@
 
 #########[ Imports ]########################################################### 
 
-import os
-from flask_script import Manager
-from flask_migrate import Migrate, MigrateCommand
+from flask import Blueprint, Response, abort, json, jsonify, request, url_for
 
-from src.app import create_app, db
-
-#########[ Settings & Data ]###################################################
-
-env_name = os.getenv('FLASK_ENV')
-
-app = create_app(env_name)
-
-migrate = Migrate(app=app, db=db)
-
-manager = Manager(app=app)
-
-manager.add_command('db', MigrateCommand)
+import json
 
 #########[ Module main code ]##################################################
 
-if __name__ == '__main__':
-  manager.run()
+def custom_response(res, status_code):
+    """
+    Custom Response Function
+    """
+    return Response(
+        mimetype="application/json",
+        response=json.dumps(res),
+        status=status_code
+    )
 
 #########[ end of file ]#######################################################
-
-
