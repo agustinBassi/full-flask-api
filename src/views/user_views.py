@@ -25,29 +25,61 @@ user_api = Blueprint('users', __name__)
 
 @user_api.route('/', methods=['GET'])
 def get_all_users():
-    # return the response with the status code
-    return custom_response({'user': "fake user"}, 200)
 
-@user_api.route('/<user_id>/', methods=['GET'])
+    # TODO: return all users as JSON
+
+    all_users = UserModel.get_all_users()
+    # return the response with the status code
+    return custom_response({'users': "all_users"}, 200)
+
+@user_api.route('/<int:user_id>/', methods=['GET'])
 def get_user(user_id):
     # obtain the first device with the device_id
     user = UserModel.query.filter_by(id=user_id).first()
     # abort if no device found
     if user is None:
         abort(404)
+
+    # TODO: Apply some more filter to check the user
+
+    # TODO: representate user as json.
+
     # return the response with the status code
-    return custom_response({'user': "fake user"}, 200)
+    return custom_response({'user' : user.serialize()}, 200)
 
 @user_api.route('/', methods=['POST'])
 def create_user():
+
+    # TODO: Apply validation for received JSON
+
     data = {
         "name" : "Agustin",
         "age"  : 30
     }
 
     user = UserModel(data)
-    # user.save()
+    user.save()
     # return the response with the status code
-    return custom_response({'user': user.name}, 201)
+    return custom_response({'user' : user.serialize()}, 201)
+
+@user_api.route('/', methods=['UPDATE'])
+def update_user():
+
+    # TODO: implement same validation as put.
+
+    # TODO: return 200 Code because not post
+
+    pass
+
+@user_api.route('/', methods=['DELETE'])
+def delete_user():
+
+    # TODO: implement same validation as put.
+
+    # TODO: return 200 Code because not post
+
+    # TODO: check response to return
+    
+    pass
 
 #########[ end of file ]#######################################################

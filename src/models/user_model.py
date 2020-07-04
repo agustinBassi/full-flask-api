@@ -10,6 +10,10 @@
 #########[ Imports ]########################################################### 
 
 import datetime
+import json
+
+from ..shared.utils import to_json
+
 from . import db
 
 #########[ Settings & Data ]###################################################
@@ -64,8 +68,22 @@ class UserModel(db.Model):
     def get_one_user(id):
         return UserModel.query.get(id)
 
-
     def __repr__(self):
-        return '<id {}>'.format(self.id)
+        return {
+            "id" : self.id,
+            "name" : self.name,
+            "age" : self.age,
+            "created_at" : self.created_at.strftime("%Y-%m-%d %H:%M:%S"),
+            "updated_at" : self.updated_at.strftime("%Y-%m-%d %H:%M:%S"),
+        }
+
+    def serialize(self):
+        return {
+            "id" : self.id,
+            "name" : self.name,
+            "age" : self.age,
+            "created_at" : self.created_at.strftime("%Y-%m-%d %H:%M:%S"),
+            "updated_at" : self.updated_at.strftime("%Y-%m-%d %H:%M:%S"),
+        }
 
 #########[ end of file ]#######################################################
