@@ -46,8 +46,11 @@ def get_user(user_id):
 def create_user():
 
     def __validate_request_data():
+
+        print(request.headers)
         # at this place validates all required fields
         if  request.json is None or \
+            request.headers['Content-Type'] != 'application/json' or \
             not 'name' in request.json or \
             not 'state_code' in request.json or \
             not 'age' in request.json:
@@ -86,6 +89,7 @@ def update_user(user_id):
     def __validate_request_data():
         # at this place validates all required fields
         if  request.json is None or \
+            request.headers['Content-Type'] != 'application/json' or \
             not 'name' in request.json or \
             not 'state_code' in request.json or \
             not 'age' in request.json:

@@ -47,6 +47,7 @@ def create_state():
     def __validate_request_data():
         # at this place validates all required fields
         if  request.json is None or \
+            request.headers['Content-Type'] != 'application/json' or \
             not 'name' in request.json or \
             not 'code' in request.json:
             return False
@@ -75,6 +76,7 @@ def update_state(state_id):
     def __validate_request_data():
         # at this place validates all required fields
         if  request.json is None or \
+            request.headers['Content-Type'] != 'application/json' or \
             not 'name' in request.json or \
             not 'code' in request.json:
             return False
