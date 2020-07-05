@@ -22,6 +22,7 @@ class Development(object):
     JWT_SECRET_KEY = os.getenv('JWT_SECRET_KEY')
     SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    HOST="0.0.0.0"
 
     STATES_CSV_FILE = os.path.join(
         os.path.dirname(os.path.abspath(__file__)), 
@@ -38,6 +39,7 @@ class Production(object):
     SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL')
     JWT_SECRET_KEY = os.getenv('JWT_SECRET_KEY')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    HOST="0.0.0.0"
 
     STATES_CSV_FILE = os.path.join(
         os.path.dirname(os.path.abspath(__file__)), 
