@@ -14,6 +14,7 @@ from flask import Flask
 from .config import app_config
 from .models import db
 from .views.user_views import user_api as user_blueprint 
+from .views.state_views import state_api as state_blueprint 
 
 #########[ Module main code ]##################################################
 
@@ -30,6 +31,7 @@ def create_app(env_name):
     db.init_app(app) 
     # registers app blueprints
     app.register_blueprint(user_blueprint, url_prefix='/api/v1/users')
+    app.register_blueprint(state_blueprint, url_prefix='/api/v1/states')
 
     @app.route('/', methods=['GET'])
     def index():
