@@ -25,7 +25,7 @@ class StateModel(db.Model):
     __tablename__ = 'states'
 
     id = db.Column(db.Integer, primary_key=True)
-    code = db.Column(db.Integer, nullable=False)
+    code = db.Column(db.Integer, nullable=False, index=True, unique=True)
     name = db.Column(db.String(64), nullable=False)
     created_at = db.Column(db.DateTime)
     updated_at = db.Column(db.DateTime)
@@ -39,14 +39,20 @@ class StateModel(db.Model):
 
 
     def save(self):
-        db.session.add(self)
-        db.session.commit()
+        if not StateModel.check_if_code_exists(self.code):
+            db.session.add(self)
+            db.session.commit()
+            return True
+        return False
 
     def update(self, data):
-        for key, item in data.items():
-            setattr(self, key, item)
-        self.updated_at = datetime.datetime.utcnow()
-        db.session.commit()
+        if not StateModel.check_if_code_exists(self.code):
+            for key, item in data.items():
+                setattr(self, key, item)
+            self.updated_at = datetime.datetime.utcnow()
+            db.session.commit()
+            return True
+        return False
 
     def delete(self):
         db.session.delete(self)
@@ -59,6 +65,12 @@ class StateModel(db.Model):
     @staticmethod
     def get_one_state(id):
         return StateModel.query.get(id)
+
+    @staticmethod
+    def check_if_code_exists(code):
+        if StateModel.query.filter_by(code=code).first():
+            return True
+        return False
 
     @staticmethod
     def check_if_table_exists():

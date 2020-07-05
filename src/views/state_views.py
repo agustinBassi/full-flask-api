@@ -65,7 +65,9 @@ def create_state():
 
     # if program reaches this section request data is OK
     state = StateModel(request.json)
-    state.save()
+    status = state.save()
+    if not status:
+        return Utils.create_json_response({"error" : "not allowed"}, 405)
     # return the response with the status code
     return Utils.create_json_response({'state' : state.serialize()}, 201)
 
@@ -101,7 +103,9 @@ def update_state(state_id):
     if not __validate_request_data():
         return Utils.create_json_response({"error" : "bad request"}, 400)
     
-    state.update(request.json)
+    status = state.update(request.json)
+    if not status:
+        return Utils.create_json_response({"error" : "not allowed"}, 405)
     # return the response with the status code
     return Utils.create_json_response({'state' : state.serialize()}, 200)
 
