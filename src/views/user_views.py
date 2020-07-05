@@ -48,13 +48,12 @@ def create_user():
         # at this place validates all required fields
         if  request.json is None or \
             not 'name' in request.json or \
+            not 'state_code' in request.json or \
             not 'age' in request.json:
-            # TODO: Validate state as well
             return False
         
-        # TODO: validate here same as states
-
         if not Utils.validate_value(request.json['name'], allowed_types=[str], lenght=128) or \
+            not Utils.validate_value(request.json['state_code'], allowed_types=[int], min_val=1, max_val=999) or \
             not Utils.validate_value(request.json['age'], allowed_types=[int], min_val=1, max_val=120):
             # TODO: Validate state as well
             return False
@@ -78,13 +77,13 @@ def update_user(user_id):
         # at this place validates all required fields
         if  request.json is None or \
             (not 'name' in request.json and \
+            not 'state_code' in request.json and \
             not 'age' in request.json):
-            # TODO: Validate state as well
             return False
         
         if not Utils.validate_value(request.json['name'], allowed_types=[str], lenght=128) or \
+            not Utils.validate_value(request.json['state_code'], allowed_types=[int], min_val=1, max_val=999) or \
             not Utils.validate_value(request.json['age'], allowed_types=[int], min_val=1, max_val=120):
-            # TODO: Validate state as well
             return False
 
         return True

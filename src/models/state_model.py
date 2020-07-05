@@ -30,6 +30,8 @@ class StateModel(db.Model):
     created_at = db.Column(db.DateTime)
     updated_at = db.Column(db.DateTime)
 
+    user = db.relationship('UserModel', backref='state', lazy='dynamic')
+
     def __init__(self, data):
         self.code = data.get('code')
         self.name = data.get('name')
@@ -65,6 +67,10 @@ class StateModel(db.Model):
     @staticmethod
     def get_one_state(id):
         return StateModel.query.get(id)
+
+    @staticmethod
+    def get_by_code(code):
+        return StateModel.query.filter_by(code=code).first()
 
     @staticmethod
     def check_if_code_exists(code):

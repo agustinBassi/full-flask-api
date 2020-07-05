@@ -14,6 +14,8 @@ import json
 
 from . import db
 
+from .state_model import StateModel
+
 #########[ Settings & Data ]###################################################
 
 class UserModel(db.Model):
@@ -30,6 +32,10 @@ class UserModel(db.Model):
     created_at = db.Column(db.DateTime)
     modified_at = db.Column(db.DateTime)
 
+    state_code = db.Column(db.Integer, db.ForeignKey("states.code"), default=1)
+
+    # state_code = db.Column(db.Integer, db.ForeignKey("StateModel.code"))
+    # state = db.relationship('StateModel', backref='state', lazy='dynamic')
     # TODO: Resolve state here
 
     # class constructor
@@ -39,6 +45,7 @@ class UserModel(db.Model):
         """
         self.name = data.get('name')
         self.age = data.get('age')
+        self.state_code = data.get('state_code')
         self.created_at = datetime.datetime.utcnow()
         self.updated_at = datetime.datetime.utcnow()
 
@@ -91,6 +98,7 @@ class UserModel(db.Model):
             "name" : self.name,
             "age" : self.age,
             "created_at" : self.created_at.strftime("%Y-%m-%d %H:%M:%S"),
+            "state" : StateModel.get_by_code(self.state_code).serialize()
             
             # TODO: Check why not works updated_at
             
