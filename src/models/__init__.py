@@ -7,19 +7,14 @@
 # Brief: Project to test skill working with Python & REST APIs
 ###############################################################################
 
-#########[ Imports ]########################################################### 
-
-
-#########[ Settings & Data ]###################################################
-
-
-#########[ Module classes ]##################################################
-
-
 #########[ Module main code ]##################################################
 
+from flask_sqlalchemy import SQLAlchemy
 
-#########[ TODOs section ]#####################################################
+# initialize database
+db = SQLAlchemy()
 
+from .user_model import UserModel
+from .state_model import StateModel
 
 #########[ end of file ]#######################################################
