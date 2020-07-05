@@ -23,6 +23,12 @@ class Development(object):
     SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
+    STATES_CSV_FILE = os.path.join(
+        os.path.dirname(os.path.abspath(__file__)), 
+        "../data/states.csv"
+        )
+    
+
 class Production(object):
     """
     Production environment configurations
@@ -32,6 +38,11 @@ class Production(object):
     SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL')
     JWT_SECRET_KEY = os.getenv('JWT_SECRET_KEY')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+
+    STATES_CSV_FILE = os.path.join(
+        os.path.dirname(os.path.abspath(__file__)), 
+        "../data/states.csv"
+        )
 
 
 app_config = {

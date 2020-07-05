@@ -14,6 +14,8 @@ import json
 
 from . import db
 
+from .state_model import StateModel
+
 #########[ Settings & Data ]###################################################
 
 class UserModel(db.Model):
@@ -30,7 +32,7 @@ class UserModel(db.Model):
     created_at = db.Column(db.DateTime)
     modified_at = db.Column(db.DateTime)
 
-    # TODO: Resolve state here
+    state_code = db.Column(db.Integer, db.ForeignKey("states.code"))
 
     # class constructor
     def __init__(self, data):
@@ -39,6 +41,7 @@ class UserModel(db.Model):
         """
         self.name = data.get('name')
         self.age = data.get('age')
+        self.state_code = data.get('state_code')
         self.created_at = datetime.datetime.utcnow()
         self.updated_at = datetime.datetime.utcnow()
 
@@ -66,6 +69,16 @@ class UserModel(db.Model):
     def get_one_user(id):
         return UserModel.query.get(id)
 
+    @staticmethod
+    def check_if_table_exists():
+        users = None
+        try:
+            users = UserModel.get_all_users()
+        except:
+            pass
+        if not users:
+            db.create_all()
+
     def __repr__(self):
         return {
             "id" : self.id,
@@ -76,14 +89,17 @@ class UserModel(db.Model):
         }
 
     def serialize(self):
+
+        state = StateModel.get_by_code(self.state_code).serialize()
+
         return {
             "id" : self.id,
             "name" : self.name,
             "age" : self.age,
             "created_at" : self.created_at.strftime("%Y-%m-%d %H:%M:%S"),
+            "state" : state
             
             # TODO: Check why not works updated_at
-            
             # "updated_at" : self.updated_at.strftime("%Y-%m-%d %H:%M:%S"),
         }
 

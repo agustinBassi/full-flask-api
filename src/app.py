@@ -9,13 +9,47 @@
 
 #########[ Imports ]########################################################### 
 
+import csv
+import logging
+
 from flask import Flask
 
 from .config import app_config
 from .models import db
-from .views.user_views import user_api as user_blueprint 
+from .models.state_model import StateModel
+from .models.user_model import UserModel
+from .views.state_views import state_api as state_blueprint
+from .views.user_views import user_api as user_blueprint
 
-#########[ Module main code ]##################################################
+55#########[ Module main code ]##################################################
+
+def create_database(app):
+    # create all mmit()
+    # read states tables
+    states = None
+    try:
+        states = StateModel.get_all_states()
+    except:
+        pass
+    # if table has not loaded values ...
+    if not states:
+        # read csv from app config
+        csv_states_path = app.config['STATES_CSV_FILE'] 
+        # convert csv to dict
+        dict_states = csv.DictReader(open(csv_states_path), delimiter=";")
+        # iterate over each csv row creating a state object
+        for state_row in dict_states:
+            # adapt spanish headers to english headers
+            state_data = {
+                'code' : int(state_row["codigo"]),
+                'name' : state_row["nombre"],
+            }
+            # create and save each state into DB
+            state = StateModel(state_data)
+            state.save()
+    else:
+        pass
+    
 
 def create_app(env_name):
     """
@@ -30,6 +64,11 @@ def create_app(env_name):
     db.init_app(app) 
     # registers app blueprints
     app.register_blueprint(user_blueprint, url_prefix='/api/v1/users')
+    app.register_blueprint(state_blueprint, url_prefix='/api/v1/states')
+    # push context in order to get app instance in other modules
+    app.app_context().push()
+    # create the database of application or check if exists
+    create_database(app)
 
     @app.route('/', methods=['GET'])
     def index():
@@ -48,5 +87,6 @@ def create_app(env_name):
             """
 
     return app
+
 
 #########[ end of file ]#######################################################
