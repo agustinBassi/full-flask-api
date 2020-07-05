@@ -66,6 +66,16 @@ class UserModel(db.Model):
     def get_one_user(id):
         return UserModel.query.get(id)
 
+    @staticmethod
+    def check_if_table_exists():
+        users = None
+        try:
+            users = UserModel.get_all_users()
+        except:
+            pass
+        if not users:
+            db.create_all()
+
     def __repr__(self):
         return {
             "id" : self.id,

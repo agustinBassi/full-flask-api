@@ -35,6 +35,8 @@ class StateModel(db.Model):
         self.name = data.get('name')
         self.created_at = datetime.datetime.utcnow()
         self.updated_at = datetime.datetime.utcnow()
+        StateModel.check_if_table_exists()
+
 
     def save(self):
         db.session.add(self)
@@ -58,6 +60,16 @@ class StateModel(db.Model):
     def get_one_state(id):
         return StateModel.query.get(id)
 
+    @staticmethod
+    def check_if_table_exists():
+        states = None
+        try:
+            states = StateModel.get_all_states()
+        except:
+            pass
+        if not states:
+            db.create_all()
+    
     def __repr__(self):
         return {
             "id" : self.id,

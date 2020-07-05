@@ -9,30 +9,28 @@
 
 #########[ Imports ]########################################################### 
 
+import csv
+import logging
+
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
 
 from .config import app_config
 from .models import db
-from .views.user_views import user_api as user_blueprint 
-from .views.state_views import state_api as state_blueprint 
-
 from .models.state_model import StateModel
 from .models.user_model import UserModel
-
-import logging
-import csv
-
-
-db = SQLAlchemy()
+from .views.state_views import state_api as state_blueprint
+from .views.user_views import user_api as user_blueprint
 
 #########[ Module main code ]##################################################
 
 def create_database(app):
-    # create all tables based on models
-    db.create_all()
+    # create all mmit()
     # read states tables
-    states = StateModel.get_all_states()
+    states = None
+    try:
+        states = StateModel.get_all_states()
+    except:
+        pass
     # if table has not loaded values ...
     if not states:
         # read csv from app config
@@ -67,7 +65,6 @@ def create_app(env_name):
     # registers app blueprints
     app.register_blueprint(user_blueprint, url_prefix='/api/v1/users')
     app.register_blueprint(state_blueprint, url_prefix='/api/v1/states')
-
     # push context in order to get app instance in other modules
     app.app_context().push()
     # create the database of application or check if exists
@@ -90,9 +87,6 @@ def create_app(env_name):
             """
 
     return app
-
-
-
 
 
 #########[ end of file ]#######################################################
