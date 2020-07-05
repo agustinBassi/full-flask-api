@@ -12,8 +12,6 @@
 import datetime
 import json
 
-from ..shared.utils import to_json
-
 from . import db
 
 #########[ Settings & Data ]###################################################
@@ -83,7 +81,10 @@ class UserModel(db.Model):
             "name" : self.name,
             "age" : self.age,
             "created_at" : self.created_at.strftime("%Y-%m-%d %H:%M:%S"),
-            "updated_at" : self.updated_at.strftime("%Y-%m-%d %H:%M:%S"),
+            
+            # TODO: Check why not works updated_at
+            
+            # "updated_at" : self.updated_at.strftime("%Y-%m-%d %H:%M:%S"),
         }
 
 #########[ end of file ]#######################################################
