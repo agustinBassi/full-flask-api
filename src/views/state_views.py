@@ -49,12 +49,10 @@ def create_state():
         if  request.json is None or \
             not 'name' in request.json or \
             not 'code' in request.json:
-            # TODO: Validate state as well
             return False
         
         if not Utils.validate_value(request.json['name'], allowed_types=[str], lenght=128) or \
             not Utils.validate_value(request.json['code'], allowed_types=[int], min_val=1, max_val=999999):
-            # TODO: Validate state as well
             return False
 
         return True
@@ -77,9 +75,8 @@ def update_state(state_id):
     def __validate_request_data():
         # at this place validates all required fields
         if  request.json is None or \
-            (not 'name' in request.json and \
-            not 'code' in request.json):
-            # TODO: Validate state as well
+            not 'name' in request.json or \
+            not 'code' in request.json:
             return False
         
         if request.json.get('name') is not None and \
@@ -88,8 +85,6 @@ def update_state(state_id):
         if request.json.get('code') is not None and \
             not Utils.validate_value(request.json['code'], allowed_types=[int], min_val=1, max_val=999999):
             return False
-
-        # TODO: Validate state as well
 
         return True
 

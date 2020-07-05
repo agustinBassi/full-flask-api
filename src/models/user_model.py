@@ -32,11 +32,7 @@ class UserModel(db.Model):
     created_at = db.Column(db.DateTime)
     modified_at = db.Column(db.DateTime)
 
-    state_code = db.Column(db.Integer, db.ForeignKey("states.code"), default=1)
-
-    # state_code = db.Column(db.Integer, db.ForeignKey("StateModel.code"))
-    # state = db.relationship('StateModel', backref='state', lazy='dynamic')
-    # TODO: Resolve state here
+    state_code = db.Column(db.Integer, db.ForeignKey("states.code"))
 
     # class constructor
     def __init__(self, data):
@@ -93,15 +89,17 @@ class UserModel(db.Model):
         }
 
     def serialize(self):
+
+        state = StateModel.get_by_code(self.state_code).serialize()
+
         return {
             "id" : self.id,
             "name" : self.name,
             "age" : self.age,
             "created_at" : self.created_at.strftime("%Y-%m-%d %H:%M:%S"),
-            "state" : StateModel.get_by_code(self.state_code).serialize()
+            "state" : state
             
             # TODO: Check why not works updated_at
-            
             # "updated_at" : self.updated_at.strftime("%Y-%m-%d %H:%M:%S"),
         }
 

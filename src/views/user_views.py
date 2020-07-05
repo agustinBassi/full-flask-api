@@ -13,6 +13,7 @@ from flask import Blueprint, Response, abort, json, jsonify, request, url_for
 
 from ..shared.utils import Utils
 from ..models.user_model import UserModel
+from ..models.state_model import StateModel
 
 #########[ Settings & Data ]###################################################
 
@@ -52,10 +53,19 @@ def create_user():
             not 'age' in request.json:
             return False
         
-        if not Utils.validate_value(request.json['name'], allowed_types=[str], lenght=128) or \
-            not Utils.validate_value(request.json['state_code'], allowed_types=[int], min_val=1, max_val=999) or \
+        if not StateModel.check_if_code_exists(request.json.get('state_code')):
+            return False
+
+        if request.json.get('name') is not None and \
+            not Utils.validate_value(request.json['name'], allowed_types=[str], lenght=128):
+            return False
+        
+        if request.json.get('state_code') is not None and \
+            not Utils.validate_value(request.json['state_code'], allowed_types=[int], min_val=1, max_val=999):
+            return False
+
+        if request.json.get('age') is not None and \
             not Utils.validate_value(request.json['age'], allowed_types=[int], min_val=1, max_val=120):
-            # TODO: Validate state as well
             return False
 
         return True
@@ -76,13 +86,23 @@ def update_user(user_id):
     def __validate_request_data():
         # at this place validates all required fields
         if  request.json is None or \
-            (not 'name' in request.json and \
-            not 'state_code' in request.json and \
-            not 'age' in request.json):
+            not 'name' in request.json or \
+            not 'state_code' in request.json or \
+            not 'age' in request.json:
             return False
         
-        if not Utils.validate_value(request.json['name'], allowed_types=[str], lenght=128) or \
-            not Utils.validate_value(request.json['state_code'], allowed_types=[int], min_val=1, max_val=999) or \
+        if not StateModel.check_if_code_exists(request.json.get('state_code')):
+            return False
+
+        if request.json.get('name') is not None and \
+            not Utils.validate_value(request.json['name'], allowed_types=[str], lenght=128):
+            return False
+        
+        if request.json.get('state_code') is not None and \
+            not Utils.validate_value(request.json['state_code'], allowed_types=[int], min_val=1, max_val=999):
+            return False
+
+        if request.json.get('age') is not None and \
             not Utils.validate_value(request.json['age'], allowed_types=[int], min_val=1, max_val=120):
             return False
 
