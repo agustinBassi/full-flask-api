@@ -17,7 +17,6 @@ class Development(object):
     """
     Development environment configuration
     """
-
     HOST="0.0.0.0"
     PORT = 5000
 
@@ -67,9 +66,7 @@ class Testing(object):
     JWT_SECRET_KEY = os.getenv('JWT_SECRET_KEY')
     
     SQLALCHEMY_DATABASE_URI = 'postgres://test:test@localhost:5432/test'
-
-    # SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_TEST_URL')
-    SQLALCHEMY_TRACK_MODIFICATIONS=False
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     STATES_CSV_FILE = os.path.join(
         os.path.dirname(os.path.abspath(__file__)), 
