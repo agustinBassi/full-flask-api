@@ -20,6 +20,8 @@ class Utils:
     def __init__(self):
         pass
 
+    # TODO: create function to validate if headers has required application/json. Can be a decorator
+
     @staticmethod
     def create_json_response(res, status_code):
         """

@@ -40,14 +40,13 @@ def get_user(user_id):
     if user is None:
         return Utils.create_json_response({"error" : "not found"}, 404)
     # return the response with the status code
-    return Utils.create_json_response({'user' : user.serialize()}, 200)
+    return Utils.create_json_response(user.serialize(), 200)
 
 @user_api.route('/', methods=['POST'])
 def create_user():
 
     def __validate_request_data():
 
-        print(request.headers)
         # at this place validates all required fields
         if  request.json is None or \
             request.headers['Content-Type'] != 'application/json' or \
@@ -81,7 +80,7 @@ def create_user():
     user = UserModel(request.json)
     user.save()
     # return the response with the status code
-    return Utils.create_json_response({'user' : user.serialize()}, 201)
+    return Utils.create_json_response(user.serialize(), 201)
 
 @user_api.route('/<int:user_id>/', methods=['PUT'])
 def update_user(user_id):
@@ -124,7 +123,7 @@ def update_user(user_id):
     
     user.update(request.json)
     # return the response with the status code
-    return Utils.create_json_response({'user' : user.serialize()}, 200)
+    return Utils.create_json_response(user.serialize(), 200)
 
 @user_api.route('/<int:user_id>/', methods=['DELETE'])
 def delete_user(user_id):
