@@ -1,20 +1,42 @@
 version: '3'
 
 services:
-  api:
-    image: api_local
-    restart: always
-    ports:
-      - "5000:5000"
 
   db:
-    image: postgres:9.6-alpine
-    restart: always
-    ports:
-      - "5432:5432"
+    image:                  postgres:9.6-alpine
+    hostname:               db
+    container_name:         db
+    restart:                always
     environment:
-#      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 123456789
+      POSTGRES_USER:        test
+      POSTGRES_PASSWORD:    test
+      POSTGRES_DB:          test
     volumes:
-    - ./data:/var/lib/postgresql/data
+    -                       ./data/db_postgres:/var/lib/postgresql/data
+    networks:
+      -                     net-bkr-app
+    ports:
+      -                     "5432:5432"
 
+  api:
+    image:                  local/bkr-python:latest
+    hostname:               api
+    container_name:         api
+    restart:                always
+    environment:
+      FLASK_ENV:            development
+      DATABASE_URL:         sqlite:////app/data/db_sqlite/db.sqlite
+      JWT_SECRET_KEY:       hhgaghhgsdhdhdd
+    volumes:
+      -                     .:/app
+    networks:
+      -                     net-bkr-app
+    depends_on:
+      -                     db
+    command:                python /app/run.py
+    ports:
+      -                     "5000:5000"
+
+networks:
+  net-bkr-app:
+    driver:                 bridge
