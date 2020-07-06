@@ -8,36 +8,33 @@ services:
     container_name:         db
     restart:                always
     environment:
-      POSTGRES_USER:        test
-      POSTGRES_PASSWORD:    test
-      POSTGRES_DB:          bkr-api
+      POSTGRES_USER:        bkr-user
+      POSTGRES_PASSWORD:    bkr-pass
+      POSTGRES_DB:          bkr-db
     volumes:
     -                       ./data/db_postgres:/var/lib/postgresql/data
     networks:
-      -                     net-bkr-app
+      -                     net-bkr-api
     ports:
       -                     "5432:5432"
 
   api:
-    image:                  local/bkr-python:latest
+    build:                  .
     hostname:               api
     container_name:         api
     restart:                always
     environment:
       FLASK_ENV:            development
-      DATABASE_URL:         postgres://test:test@db:5432/bkr-api
+      DATABASE_URL:         postgresql://bkr-user:bkr-pass@db:5432/bkr-db
       JWT_SECRET_KEY:       v3rys3cr3tk3y
       PORT:                 5000
-    volumes:
-      -                     .:/app
     networks:
-      -                     net-bkr-app
+      -                     net-bkr-api
     depends_on:
       -                     db
-    command:                python /app/run.py # su uwsgi -c 'uwsgi uwsgi.ini --thunder-lock'
     ports:
       -                     "5000:5000"
 
 networks:
-  net-bkr-app:
+  net-bkr-api:
     driver:                 bridge

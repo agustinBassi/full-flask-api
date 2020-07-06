@@ -13,7 +13,8 @@ import csv
 import logging
 
 from flask import Flask
-from sqlalchemy_utils import database_exists, create_database, drop_database
+
+from sqlalchemy_utils import create_database, database_exists, drop_database
 
 from .config import app_config
 from .models import db
