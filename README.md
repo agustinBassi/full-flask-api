@@ -152,7 +152,7 @@ Es interesante notar que mediante el archivo .dockerignore se puede realizar la 
 ### 
 
 
-### Estructura de directorios {#estructura-de-directorios}
+### Estructura de directorios
 
 La estructura de todo el proyecto se describe en de la siguiente forma.
 
@@ -249,7 +249,7 @@ Es necesario notar que esto sólo ocurrirá la primera vez que se ejecute la apl
 ### 
 
 
-### Correr la aplicación con Python y Virtual Env {#correr-la-aplicación-con-python-y-virtual-env}
+### Correr la aplicación con Python y Virtual Env 
 
 Si se desea agregar funcionalidad al código (modo desarrollo) o testear el codigo (modo testing) es conveniente realizar la operación utilizando un entorno virtual de python. Para ello crear el entorno virtual y activarlo con el siguiente comando.
 
@@ -308,7 +308,7 @@ Si se quiere más información sobre los recursos de la aplicación, en la secci
 A continuación se detallan los comandos necesarios para realizar las pruebas con cada uno de los modelos.
 
 
-### Usuarios {#usuarios}
+### Usuarios 
 
 Obtener todos los usuarios
 
@@ -404,7 +404,7 @@ Crear o actualizar un usuario en particular
 
 
 
-### Estados {#estados}
+### Estados
 
 Obtener todos los estados
 
@@ -508,7 +508,7 @@ Crear o actualizar un estado en particular
 La aplicación presenta los siguientes recursos HTTP para realizar operaciones CRUD sobre cada uno de los datos.
 
 
-### Recursos de Usuarios {#recursos-de-usuarios}
+### Recursos de Usuarios 
 
 
 <table>
@@ -625,7 +625,7 @@ La aplicación presenta los siguientes recursos HTTP para realizar operaciones C
 
 
 
-### Recursos de Estados {#recursos-de-estados}
+### Recursos de Estados
 
 
 <table>
@@ -792,7 +792,7 @@ Ran 20 tests in 4.092s
 
 
 
-### Coverage {#coverage}
+### Coverage
 
 A partir de los test cases generados se puede crear un reporte de coverage, que indica qué porcentaje del código pudo ser probado de manera automática. Debido a que este reporte se genera automáticamente no se suele agregar en un repositorio, pero dadas las circunstancias de este proyecto se decidió agregarlo con el objetivo de mostrar el reporte sin necesidad de correr la aplicación en un entorno virtual.
 
@@ -814,10 +814,36 @@ pytest --cov=src --ignore=data --cov-report html
 ```
 
 
-La ejecución del comando anterior reemplazará el contenido del directorio htmlcov/ o bien lo creará en caso que no exista. 
+La ejecución del comando anterior reemplazará el contenido del directorio htmlcov/ o bien lo creará en caso que no exista. Abrir el archivo htmlcov/index.html  para visualizar el reporte.
 
-Abrir el archivo htmlcov/index.html  para visualizar el reporte.
+En caso de querer visualizar el reporte desde la terminal, ejecutar el siguiente comando.
 
+```
+pytest --cov=src --ignore=data
+```
+
+El cual mostrara una salida como la que se muestra a continuacion
+
+```
+Name                            Stmts   Miss  Cover
+---------------------------------------------------
+src/__init__.py                     0      0   100%
+src/app.py                         40      4    90%
+src/config.py                      28      0   100%
+src/models/__init__.py              4      0   100%
+src/models/state_model.py          56      9    84%
+src/models/user_model.py           46      9    80%
+src/shared/__init__.py              0      0   100%
+src/shared/utils.py                28      8    71%
+src/tests/__init__.py               0      0   100%
+src/tests/test_state_views.py      73      1    99%
+src/tests/test_user_views.py       83      1    99%
+src/views/__init__.py               0      0   100%
+src/views/state_views.py           50      5    90%
+src/views/user_views.py            57      6    89%
+---------------------------------------------------
+TOTAL                             465     43    91%
+```
 
 ## 
 
