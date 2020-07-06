@@ -13,6 +13,7 @@ import csv
 import logging
 
 from flask import Flask
+from sqlalchemy_utils import database_exists, create_database, drop_database
 
 from .config import app_config
 from .models import db
@@ -21,35 +22,44 @@ from .models.user_model import UserModel
 from .views.state_views import state_api as state_blueprint
 from .views.user_views import user_api as user_blueprint
 
-55#########[ Module main code ]##################################################
+#########[ Module main code ]##################################################
 
-def create_database(app):
-    # create all mmit()
-    # read states tables
-    states = None
-    try:
-        states = StateModel.get_all_states()
-    except:
-        pass
-    # if table has not loaded values ...
-    if not states:
-        # read csv from app config
-        csv_states_path = app.config['STATES_CSV_FILE'] 
-        # convert csv to dict
-        dict_states = csv.DictReader(open(csv_states_path), delimiter=";")
-        # iterate over each csv row creating a state object
-        for state_row in dict_states:
-            # adapt spanish headers to english headers
-            state_data = {
-                'code' : int(state_row["codigo"]),
-                'name' : state_row["nombre"],
-            }
-            # create and save each state into DB
-            state = StateModel(state_data)
-            state.save()
-    else:
-        pass
+def initialize_database(app):
     
+    def _fill_states_table():
+        # read states tables
+        states = None
+        try:
+            states = StateModel.get_all_states()
+        except:
+            pass
+        # if table has not loaded values ...
+        if not states:
+            # read csv from app config
+            csv_states_path = app.config['STATES_CSV_FILE'] 
+            # convert csv to dict
+            dict_states = csv.DictReader(open(csv_states_path), delimiter=";")
+            # iterate over each csv row creating a state object
+            for state_row in dict_states:
+                # adapt spanish headers to english headers
+                state_data = {
+                    'code' : int(state_row["codigo"]),
+                    'name' : state_row["nombre"],
+                }
+                # create and save each state into DB
+                state = StateModel(state_data)
+                state.save()
+        else:
+            pass
+    
+    # at first check if database exists, if not, create it.
+    if not database_exists(app.config['SQLALCHEMY_DATABASE_URI']):
+        create_database(app.config['SQLALCHEMY_DATABASE_URI'])
+    # create all tables from models
+    db.create_all()
+    # fill states tables from CSV
+    _fill_states_table()
+
 
 def create_app(env_name):
     """
@@ -68,7 +78,7 @@ def create_app(env_name):
     # push context in order to get app instance in other modules
     app.app_context().push()
     # create the database of application or check if exists
-    create_database(app)
+    initialize_database(app)
 
     @app.route('/', methods=['GET'])
     def index():
