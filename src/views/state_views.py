@@ -39,7 +39,7 @@ def get_state(state_id):
     if state is None:
         return Utils.create_json_response({"error" : "not found"}, 404)
     # return the response with the status code
-    return Utils.create_json_response({'state' : state.serialize()}, 200)
+    return Utils.create_json_response(state.serialize(), 200)
 
 @state_api.route('/', methods=['POST'])
 def create_state():
@@ -68,7 +68,7 @@ def create_state():
     if not status:
         return Utils.create_json_response({"error" : "not allowed"}, 405)
     # return the response with the status code
-    return Utils.create_json_response({'state' : state.serialize()}, 201)
+    return Utils.create_json_response(state.serialize(), 201)
 
 @state_api.route('/<int:state_id>/', methods=['PUT'])
 def update_state(state_id):
@@ -104,7 +104,7 @@ def update_state(state_id):
     if not status:
         return Utils.create_json_response({"error" : "not allowed"}, 405)
     # return the response with the status code
-    return Utils.create_json_response({'state' : state.serialize()}, 200)
+    return Utils.create_json_response(state.serialize(), 200)
 
 @state_api.route('/<int:state_id>/', methods=['DELETE'])
 def delete_user(state_id):
