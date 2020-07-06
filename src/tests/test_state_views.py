@@ -1,8 +1,21 @@
+#!/usr/bin/env python3
+###############################################################################
+# Author: Agustin Bassi
+# Date: July 2020
+# Copyright: Bankar
+# Project: Bankar Python code challenge
+# Brief: Project to test skill working with Python & REST APIs
+###############################################################################
+
+#########[ Imports ]########################################################### 
+
 import unittest
 import os
 import json
 
 from ..app import create_app, db
+
+#########[ Module classes ]##################################################
 
 class StateTest(unittest.TestCase):
     """
@@ -198,6 +211,9 @@ class StateTest(unittest.TestCase):
             )
         self.assertEqual(res.status_code, 404)
 
+#########[ Module main code ]##################################################
 
 if __name__ == "__main__":
   unittest.main() 
+
+#########[ end of file ]#######################################################
