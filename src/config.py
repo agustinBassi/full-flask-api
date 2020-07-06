@@ -17,6 +17,7 @@ class Development(object):
     """
     Development environment configuration
     """
+    PORT = 5100
     DEBUG = True
     TESTING = False
     JWT_SECRET_KEY = os.getenv('JWT_SECRET_KEY')
@@ -34,6 +35,7 @@ class Production(object):
     """
     Production environment configurations
     """
+    PORT = 5100
     DEBUG = False
     TESTING = False
     SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL')

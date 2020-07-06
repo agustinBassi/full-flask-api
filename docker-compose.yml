@@ -24,16 +24,17 @@ services:
     container_name:         api
     restart:                always
     environment:
-      FLASK_ENV:            development
+      FLASK_ENV:            production
       DATABASE_URL:         postgres://test:test@db:5432/bkr
       JWT_SECRET_KEY:       v3rys3cr3tk3y
+      PORT:                 5000
     volumes:
       -                     .:/app
     networks:
       -                     net-bkr-app
     depends_on:
       -                     db
-    command:                python /app/run.py
+    command:                su uwsgi -c 'uwsgi uwsgi.ini --thunder-lock'
     ports:
       -                     "5000:5000"
 
