@@ -30,7 +30,7 @@ class UserModel(db.Model):
     name = db.Column(db.String(128), nullable=False)
     age = db.Column(db.Integer, nullable=False)
     created_at = db.Column(db.DateTime)
-    modified_at = db.Column(db.DateTime)
+    updated_at = db.Column(db.DateTime)
 
     state_code = db.Column(db.Integer, db.ForeignKey("states.code"))
 
@@ -44,8 +44,6 @@ class UserModel(db.Model):
         self.state_code = data.get('state_code')
         self.created_at = datetime.datetime.utcnow()
         self.updated_at = datetime.datetime.utcnow()
-
-        # TODO: Resolve state here
 
     def save(self):
         db.session.add(self)
@@ -97,10 +95,8 @@ class UserModel(db.Model):
             "name" : self.name,
             "age" : self.age,
             "created_at" : self.created_at.strftime("%Y-%m-%d %H:%M:%S"),
-            "state" : state
-            
-            # TODO: Check why not works updated_at
-            # "updated_at" : self.updated_at.strftime("%Y-%m-%d %H:%M:%S"),
+            "state" : state,
+            "updated_at" : self.updated_at.strftime("%Y-%m-%d %H:%M:%S"),
         }
 
 #########[ end of file ]#######################################################

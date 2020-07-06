@@ -103,7 +103,7 @@ class StateModel(db.Model):
             "code" : self.code,
             "name" : self.name,
             "created_at" : self.created_at.strftime("%Y-%m-%d %H:%M:%S"),
-            # "updated_at" : self.updated_at.strftime("%Y-%m-%d %H:%M:%S"),
+            "updated_at" : self.updated_at.strftime("%Y-%m-%d %H:%M:%S"),
         }
 
 #########[ end of file ]#######################################################
